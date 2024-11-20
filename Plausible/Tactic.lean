@@ -141,6 +141,7 @@ instances, see `Testing.Plausible.Testable`.
 Optional arguments given with `plausible (config : { ... })`
 * `numInst` (default 100): number of examples to test properties with
 * `maxSize` (default 100): final size argument
+* `logForTyche` (default false): enable analysis via Tyche
 
 Options:
 * `set_option trace.plausible.decoration true`: print the proposition with quantifier annotations
@@ -166,7 +167,8 @@ elab_rules : tactic | `(tactic| plausible $[$cfg]?) => withMainContext do
     traceSuccesses := cfg.traceSuccesses || (← isTracingEnabledFor `plausible.success),
     traceShrink := cfg.traceShrink || (← isTracingEnabledFor `plausible.shrink.steps),
     traceShrinkCandidates := cfg.traceShrinkCandidates
-      || (← isTracingEnabledFor `plausible.shrink.candidates) }
+      || (← isTracingEnabledFor `plausible.shrink.candidates),
+    logForTyche := cfg.logForTyche }
   let inst ← try
     synthInstance (← mkAppM ``Testable #[tgt'])
   catch _ => throwError "\
